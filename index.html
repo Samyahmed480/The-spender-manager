@@ -1,0 +1,95 @@
+        <style>
+@media print {
+    body > *:not(main) { display: none !important; }
+    main > *:not(section:nth-child(2)) { display: none !important; }
+    section:nth-child(2) { margin: 0 !important; }
+    table { box-shadow: none !important; font-size: 1.3em !important; }
+    th, td { color: #232946 !important; background: #fff !important; border: 1px solid #312e81 !important; }
+    #edit-modal { display: none !important; }
+}
+        </style>
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>مدير الاموال</title>
+        <script defer src="main.js"></script>
+    </head>
+
+    <body>
+        <header style="text-align:center; margin-top:32px; margin-bottom:8px;">
+            <h1 style="color:#a5b4fc; font-size:2em; margin-bottom:8px;">مدير الأموال</h1>
+            <p style="color:#e0e7ff; font-size:1.1em;">نظام إدارة المصروفات الشخصية</p>
+        </header>
+        <main style="max-width:600px; margin:auto;">
+            <section style="margin-bottom:32px;">
+                <div>
+                    <p>المجموع : <span id="total-top"
+                            style="color:#fff; background:#312e81; padding:2px 12px; border-radius:8px;">0</span></p>
+                    <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+                        <input type="number" id="amount" placeholder="السعر">
+                        <input type="text" id="desc" placeholder="العنوان أو السبب">
+                        <div style="margin:8px 0;">
+                            <label for="p">إضافة</label>
+                            <input type="radio" name="action" id="p" value="add">
+                            <label for="n">نقص</label>
+                            <input type="radio" name="action" id="n" value="sub">
+                        </div>
+                        <button id="submit">تأكيد</button>
+                        <div style="display:flex; gap:12px; margin-top:16px;">
+                            <button id="print">طباعة</button>
+                            <button id="deleteAll" style="background:#ef4444; color:#fff;">حذف الكل</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section style="margin-bottom:32px;">
+                <input type="text" id="search" placeholder="البحث عن عنوان أو سبب"
+                    style="width:100%; margin-bottom:16px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>السعر</th>
+                            <th>العنوان أو السبب</th>
+                            <th>التاريخ</th>
+                            <th>تعديل/حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody id="records">
+                        <!-- العمليات تظهر هنا تلقائياً -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4"
+                                style="text-align:center; font-weight:bold; color:#a5b4fc; background:#232946;">المجموع
+                                : <span id="total-table">0</span></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </section>
+            <!-- نافذة منبثقة للتعديل -->
+            <div id="edit-modal"
+                style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(30,41,59,0.7); z-index:1000; align-items:center; justify-content:center;">
+                <div
+                    style="background:#232946; padding:32px 24px; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.18); max-width:350px; margin:auto; text-align:center; position:relative;">
+                    <h2 style="color:#a5b4fc; margin-bottom:16px;">تعديل العملية</h2>
+                    <input type="number" id="edit-amount" placeholder="السعر" style="width:80%; margin-bottom:8px;">
+                    <input type="text" id="edit-desc" placeholder="العنوان أو السبب"
+                        style="width:80%; margin-bottom:8px;">
+                    <div style="margin-bottom:12px;">
+                        <label for="edit-add">إضافة</label>
+                        <input type="radio" name="edit-action" id="edit-add" value="add">
+                        <label for="edit-sub">نقص</label>
+                        <input type="radio" name="edit-action" id="edit-sub" value="sub">
+                    </div>
+                    <button id="edit-save" style="margin:0 8px;">حفظ</button>
+                    <button id="edit-cancel" style="background:#ef4444; color:#fff; margin:0 8px;">إلغاء</button>
+                </div>
+            </div>
+        </main>
+    </body>
+
+</html>
