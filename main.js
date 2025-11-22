@@ -20,6 +20,8 @@ const printBtn = document.getElementById('print');
 const deleteAllBtn = document.getElementById('deleteAll');
 const totalTable = document.getElementById('total-table');
 const searchInput = document.getElementById('search');
+const themeToggleBtn = document.getElementById('theme-toggle');
+const body = document.body;
 
 // تحميل العمليات من localStorage
 function loadRecords() {
@@ -62,12 +64,12 @@ function renderRecords(records, filter = '') {
         const tr = document.createElement('tr');
         const color = r.type === 'add' ? 'green' : 'red';
         tr.innerHTML = `
-            <td style=\"color:${color};font-weight:bold;\">${r.type === 'add' ? '+' : '-'}${r.amount}</td>
+            <td style="color:${color};font-weight:bold;">${r.type === 'add' ? '+' : '-'}${r.amount}</td>
             <td>${r.desc}</td>
             <td>${r.date}</td>
             <td>
                 <button class='edit-btn' data-idx='${i}'>تعديل</button>
-                <button class='delete-btn' data-idx='${i}' style='background:#ef4444;color:#fff;'>حذف</button>
+                <button class='delete-btn' data-idx='${i}'>حذف</button>
             </td>
         `;
         recordsBody.appendChild(tr);
@@ -150,7 +152,9 @@ function renderRecords(records, filter = '') {
 
 // تحديث الرصيد
 function updateBalance(records) {
-    balanceSpan.textContent = calcBalance(records);
+    if (balanceSpan) {
+        balanceSpan.textContent = calcBalance(records);
+    }
 }
 // زر الطباعة
 if (printBtn) {
@@ -202,8 +206,29 @@ searchInput.oninput = function () {
     renderRecords(records, searchInput.value);
 };
 
+// --- Theme Toggle Logic ---
+themeToggleBtn.onclick = function() {
+    const isLight = body.dataset.theme === 'light';
+    if (isLight) {
+        // Switch to dark
+        body.removeAttribute('data-theme');
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+    } else {
+        // Switch to light
+        body.dataset.theme = 'light';
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+    }
+};
+
 // تحميل البيانات عند بدء الصفحة
 window.onload = function () {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        body.dataset.theme = 'light';
+        themeToggleBtn.textContent = '🌙';
+    }
     const records = loadRecords();
     renderRecords(records);
     updateBalance(records);
